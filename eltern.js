@@ -1,6 +1,7 @@
 d3.csv("elternData.csv")
     .then(function (parents) {
 
+        //prepare data
         const categories = Object.keys(parents[0]).toString().replaceAll("\"", "").split(",");
         const values = Object.values(parents[0]).toString().replaceAll("\"", "").split(",");
 
@@ -16,19 +17,13 @@ d3.csv("elternData.csv")
         const fathersRaw = data.slice(0, 6);
         const mothersRaw = data.slice(6);
 
-        console.log(fathersRaw);
-        console.log(mothersRaw);
 
         let index = 5;
-
         const fathers = [fathersRaw[index], ...fathersRaw.filter((_, i) => i !== index)]
         const mothers = [mothersRaw[index], ...mothersRaw.filter((_, i) => i !== index)]
 
 
-
-        console.log(fathers);
-        console.log(mothers);
-
+        //build svg
         let width = 800,
             height = 500,
             gap = 50;
@@ -44,7 +39,7 @@ d3.csv("elternData.csv")
 
 
 
-        //horizontale Linien
+        //horizontal lines
         graphics.append("g").attr("class", "horLines")
             .selectAll("line")
             .data(fathers)
@@ -56,7 +51,7 @@ d3.csv("elternData.csv")
             .attr("y2", (d, i) => { return i * height / 10 + gap })
             .attr("stroke", "black");
 
-        //Kreise für Mütter und Väter
+        //Bars for mothers and fathers
         const totalScale = d3.scaleLinear()
             .domain([0, data[0].value + data[data.length - 1].value])
             .range([5, 200])
@@ -65,7 +60,7 @@ d3.csv("elternData.csv")
             .domain([d3.min(data.slice(1, data.length - 1), d => d["value"]), d3.max(data.slice(1, data.length - 1), d => d["value"])])
             .range([0, totalScale(data[0].value)])
 
-        graphics.append("g").attr("class", "fatherCircles")
+        graphics.append("g").attr("class", "fatherBars")
             .selectAll("rect")
             .data(fathers)
             .enter()
@@ -79,7 +74,7 @@ d3.csv("elternData.csv")
             .append("title").text((d) => d.value.toLocaleString());
 
 
-        graphics.append("g").attr("class", "motherCircles")
+        graphics.append("g").attr("class", "motherBars")
             .selectAll("rect")
             .data(mothers)
             .enter()
@@ -93,7 +88,7 @@ d3.csv("elternData.csv")
 
 
 
-        //vertikale Linie
+        //vertical line
         const xVerticalLine = width / 2;
         const yVerticalLine = fathers.length * gap + height / 5;
         graphics.append("line")
@@ -104,7 +99,7 @@ d3.csv("elternData.csv")
             .attr("stroke", "black")
 
 
-        //Textlabels Kategorien
+        //Textlabels Categories
         const labels = ["Nicht berufstätig", "Berufstätig insgesamt"]
         const sublabels = ["Davon Arbeiter:in", "Davon Angestellte:r", "Davon Beamt:in", "Davon Selbstständige:r"]
 
@@ -138,7 +133,7 @@ d3.csv("elternData.csv")
 
         //add piechart
         const pieData = [178_361, 444_642]; //zu Hause: 178_361, nicht zu Hause: 444_642; Source: https://www.govdata.de/web/guest/daten/-/details/bafog-geforderte-nach-wohnung-wahrend-der-ausbildung-umfang-der-forderung-bedarfssatzgruppen-un
-        const sum = 178_36 + 444_642;
+        
 
         const colorScale = d3.scaleOrdinal()
             .domain(pieData)
@@ -158,7 +153,7 @@ d3.csv("elternData.csv")
             .append("title").text((d) => d.value.toLocaleString())
 
 
-        //Add annotation 
+        //Add annotation and legend
         svg.append("text")
             .attr("transform", `translate(${gap} ${height - 30} )`)
             .text("Unter 30% der Geförderten wohnten 2021 im Haushalt der Eltern");

@@ -6,7 +6,7 @@ Entwurf einer Datenanalyse zum Thema BAföG
 - verwendete Technologien: Datawrapper, d3.js, R und HTML/CSS
 
 
-Mögliche Richtung einer Weiterentwicklung
+Mögliche Weiterentwicklung
 - regionale Unterschiede: Abgleich mit Lebenshaltungskosten vor Ort
 - Entwicklung der BAföG-Sätze der Inflation entgegenstellen -> Ist die Kritik berechtigt?
 - Überarbeiten der Grafik zu Berufen der Eltern, z.B. passende Skalen
